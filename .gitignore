@@ -1,0 +1,23 @@
+.DS_Store
+__pycache__/
+*.pyc
+.env
+.venv/
+.pytest_cache/
+
+# Upstream trainer clone
+LTX-2/
+
+# Base weights and local caches
+models/
+runs/
+cache/
+tmp/
+
+# Uncomment these if the dataset gets too large for Git/Git LFS
+# data/
+
+logs/*.tmp
+logs/*.log
+wandb/
+tensorboard/
