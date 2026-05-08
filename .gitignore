@@ -5,9 +5,6 @@ __pycache__/
 .venv/
 .pytest_cache/
 
-# Upstream trainer clone
-LTX-2/
-
 # Base weights and local caches
 models/
 runs/
