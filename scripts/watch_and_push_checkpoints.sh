@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-RUN_DIR="$HOME/workspace/runs/insidejob_run01"
-PROJECT_DIR="$HOME/workspace"
+WORKSPACE_DIR="${WORKSPACE_DIR:-$HOME/workspace}"
+PROFILE="${1:-test}"
+RUN_DIR="${RUN_DIR:-$WORKSPACE_DIR/runs/insidejob_${PROFILE}}"
+PROJECT_DIR="$WORKSPACE_DIR"
 STEP_DIR="$PROJECT_DIR/checkpoints/step"
 FINAL_DIR="$PROJECT_DIR/checkpoints/final"
 STATE_FILE="$PROJECT_DIR/.last_pushed_checkpoint"
@@ -25,7 +27,7 @@ copy_checkpoint() {
 cd "$PROJECT_DIR"
 
 while true; do
-  LATEST="$(find "$RUN_DIR" -type f \( -name '*.safetensors' -o -name '*.pt' -o -name '*.bin' \) | sort | tail -n 1 || true)"
+  LATEST="$(find "$RUN_DIR/checkpoints" -type f \( -name '*.safetensors' -o -name '*.pt' -o -name '*.bin' \) 2>/dev/null | sort | tail -n 1 || true)"
 
   if [ -n "${LATEST}" ]; then
     LAST_PUSHED="$(cat "$STATE_FILE" || true)"

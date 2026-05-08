@@ -1,0 +1,86 @@
+# Cheap smoke-test config for LTX-2.3 LoRA training.
+# Render this with scripts/render_config.sh before training.
+
+model:
+  model_path: "__MODEL_PATH__"
+  text_encoder_path: "__TEXT_ENCODER_PATH__"
+  training_mode: "lora"
+  load_checkpoint: __LOAD_CHECKPOINT__
+
+lora:
+  rank: 16
+  alpha: 16
+  dropout: 0.0
+  target_modules:
+    - "to_k"
+    - "to_q"
+    - "to_v"
+    - "to_out.0"
+
+training_strategy:
+  name: "text_to_video"
+  first_frame_conditioning_p: 0.5
+  with_audio: false
+  audio_latents_dir: "audio_latents"
+
+optimization:
+  learning_rate: 1e-4
+  steps: 200
+  batch_size: 1
+  gradient_accumulation_steps: 1
+  max_grad_norm: 1.0
+  optimizer_type: "adamw"
+  scheduler_type: "linear"
+  scheduler_params: {}
+  enable_gradient_checkpointing: true
+
+acceleration:
+  mixed_precision_mode: "bf16"
+  quantization: null
+  load_text_encoder_in_8bit: false
+
+data:
+  preprocessed_data_root: "__PRECOMPUTED_ROOT__"
+  num_dataloader_workers: 2
+
+validation:
+  prompts:
+    - "netflixinsidejob, Reagan Ridley stands in a bright Cognito Inc office, expressive animated characters in the Inside Job style, clean composition, detailed facial expressions, sharp 2D animation."
+  negative_prompt: "worst quality, inconsistent motion, blurry, jittery, distorted"
+  images: null
+  video_dims: [832, 480, 49]
+  frame_rate: 24.0
+  seed: 42
+  inference_steps: 20
+  interval: null
+  guidance_scale: 4.0
+  stg_scale: 1.0
+  stg_blocks: [29]
+  stg_mode: "stg_v"
+  generate_audio: false
+  skip_initial_validation: true
+
+checkpoints:
+  interval: 100
+  keep_last_n: -1
+  precision: "bfloat16"
+  no_resume: false
+  save_training_state: "minimal"
+
+flow_matching:
+  timestep_sampling_mode: "shifted_logit_normal"
+  timestep_sampling_params: {}
+
+hub:
+  push_to_hub: false
+  hub_model_id: null
+
+wandb:
+  enabled: false
+  project: "ltx-2-trainer"
+  entity: null
+  tags: ["ltx2", "lora", "insidejob", "test"]
+  log_validation_videos: false
+
+seed: 42
+output_dir: "__OUTPUT_DIR__"
