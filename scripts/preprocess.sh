@@ -9,6 +9,8 @@ TEXT_ENCODER_PATH="${TEXT_ENCODER_PATH:-$WORKSPACE_DIR/models/gemma}"
 PRECOMPUTED_ROOT="${PRECOMPUTED_ROOT:-$WORKSPACE_DIR/data/.precomputed}"
 RESOLUTION_BUCKETS="${RESOLUTION_BUCKETS:-832x480x49}"
 TRIGGER_WORD="${TRIGGER_WORD:-netflixinsidejob}"
+PREPROCESS_EXTRA_ARGS="${PREPROCESS_EXTRA_ARGS:-}"
+export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}"
 
 if [ ! -f "$DATASET_FILE" ]; then
   echo "Missing dataset manifest: $DATASET_FILE" >&2
@@ -34,4 +36,6 @@ uv run python scripts/process_dataset.py "$DATASET_FILE" \
   --model-path "$MODEL_PATH" \
   --text-encoder-path "$TEXT_ENCODER_PATH" \
   --output-dir "$PRECOMPUTED_ROOT" \
-  --lora-trigger "$TRIGGER_WORD"
+  --batch-size 1 \
+  --lora-trigger "$TRIGGER_WORD" \
+  $PREPROCESS_EXTRA_ARGS
