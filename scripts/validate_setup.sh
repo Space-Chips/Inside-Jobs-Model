@@ -6,7 +6,13 @@ PROFILE="${1:-test}"
 MODEL_PATH="${MODEL_PATH:-$WORKSPACE_DIR/models/ltx23/model.safetensors}"
 TEXT_ENCODER_PATH="${TEXT_ENCODER_PATH:-$WORKSPACE_DIR/models/gemma}"
 DATASET_FILE="${DATASET_FILE:-$WORKSPACE_DIR/data/insidejob_train.jsonl}"
-PRECOMPUTED_ROOT="${PRECOMPUTED_ROOT:-$WORKSPACE_DIR/data/.precomputed}"
+if [ -z "${PRECOMPUTED_ROOT+x}" ]; then
+  if [ "$PROFILE" = "5090" ]; then
+    PRECOMPUTED_ROOT="$WORKSPACE_DIR/data/.precomputed_5090"
+  else
+    PRECOMPUTED_ROOT="$WORKSPACE_DIR/data/.precomputed"
+  fi
+fi
 LTX_TRAINER_DIR="${LTX_TRAINER_DIR:-$WORKSPACE_DIR/LTX-2/packages/ltx-trainer}"
 
 fail=0
@@ -49,7 +55,11 @@ if [ -d "$PRECOMPUTED_ROOT/latents" ] && [ -d "$PRECOMPUTED_ROOT/conditions" ]; 
   echo "OK precomputed data: $PRECOMPUTED_ROOT"
 else
   echo "MISSING precomputed data: $PRECOMPUTED_ROOT"
-  echo "Run: $WORKSPACE_DIR/scripts/preprocess.sh"
+  if [ "$PROFILE" = "5090" ]; then
+    echo "Run: $WORKSPACE_DIR/scripts/preprocess_5090.sh"
+  else
+    echo "Run: $WORKSPACE_DIR/scripts/preprocess.sh"
+  fi
   fail=1
 fi
 

@@ -75,3 +75,15 @@ For the full run later:
 cd ~/workspace
 ./scripts/train_full.sh
 ```
+
+## RTX 5090 Smoke Test
+
+Use this profile only for a cheap setup test on a 32GB RTX 5090. It uses a smaller bucket, lower LoRA rank, INT8 quantization, 8-bit optimizer, and disabled validation.
+
+```bash
+cd ~/workspace
+./scripts/preprocess_5090.sh
+./scripts/validate_setup.sh 5090
+nohup ./scripts/watch_and_push_checkpoints.sh 5090 > ./logs/checkpoint_watcher_5090.log 2>&1 &
+./scripts/train_5090.sh
+```

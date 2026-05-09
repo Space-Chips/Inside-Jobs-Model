@@ -10,9 +10,9 @@ OUTPUT_DIR="${OUTPUT_DIR:-$WORKSPACE_DIR/runs/insidejob_${PROFILE}}"
 LOAD_CHECKPOINT="${MODEL_LOAD_CHECKPOINT:-null}"
 
 case "$PROFILE" in
-  test|full) ;;
+  test|full|5090) ;;
   *)
-    echo "Usage: $0 [test|full]" >&2
+    echo "Usage: $0 [test|full|5090]" >&2
     exit 2
     ;;
 esac
