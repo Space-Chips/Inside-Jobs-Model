@@ -6,12 +6,12 @@ __pycache__/
 .pytest_cache/
 
 # Rendered local configs contain machine-specific absolute paths.
-configs/ltx23_lora_insidejob_test.yaml
-configs/ltx23_lora_insidejob_full.yaml
-configs/ltx23_lora_insidejob_5090.yaml
+
+
 
 # Base weights and local caches
-LTX-2/
+
+
 models/
 runs/
 cache/
@@ -20,10 +20,4 @@ data/.precomputed/
 data/.precomputed_5090/
 .last_pushed_checkpoint
 
-# Uncomment these if the dataset gets too large for Git/Git LFS
-# data/
 
-logs/*.tmp
-logs/*.log
-wandb/
-tensorboard/
